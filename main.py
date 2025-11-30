@@ -10,7 +10,6 @@ from placo_utils.visualization import (
     line_viz,
     footsteps_viz,
 )
-from parameter.pso import PSOOptimizer
 
 warnings.filterwarnings("ignore")
 
@@ -101,7 +100,7 @@ print("Initial position reached")
 
 # Creating the FootstepsPlanner
 repetitive_footsteps_planner = placo.FootstepsPlannerRepetitive(parameters)
-d_x = 1
+d_x = 0.1
 d_y = 0.0
 d_theta = 0.0
 nb_steps = 10
@@ -124,24 +123,6 @@ if args.pybullet:
     from onshape_to_robot.simulation import Simulation
 
     sim = Simulation(model_filename, realTime=True, dt=DT)
-
-    initial_setup = {
-    "robot": robot,
-    "solver": solver,
-    "tasks": tasks,
-    "WalkPatternGeneratorClass": placo.WalkPatternGenerator,
-    "parameters": parameters
-    }
-
-    optimizer = PSOOptimizer(sim, initial_setup, swarm_size=8, iters=10)
-    best_params = optimizer.run()
-
-    # Apply best parameters
-    parameters.single_support_duration = best_params["single_support_duration"]
-    parameters.walk_com_height = best_params["walk_com_height"]
-    parameters.walk_trunk_pitch = best_params["walk_trunk_pitch"]
-    parameters.walk_max_dx_forward = best_params["walk_max_dx_forward"]
-    print("Applied best parameters, ready to continue main loop.")
     
 elif args.meshcat:
     # Starting Meshcat viewer
