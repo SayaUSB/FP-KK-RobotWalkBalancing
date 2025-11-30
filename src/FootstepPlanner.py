@@ -1,7 +1,7 @@
 import placo
 
 class FootstepPlanner:
-    """Perencanaan footstep untuk walking"""
+    """Footstep planning for walking"""
     
     def __init__(self, parameters):
         self.parameters = parameters
@@ -9,23 +9,23 @@ class FootstepPlanner:
         
     def configure_walk(self, d_x=0.1, d_y=0.0, d_theta=0.0, nb_steps=10):
         """
-        Konfigurasi parameter berjalan
+        Configure running parameters
         
         Args:
-            d_x: Jarak langkah forward/backward (m)
-            d_y: Jarak langkah lateral (m)
-            d_theta: Rotasi per langkah (rad)
-            nb_steps: Jumlah langkah
+            d_x: Forward/backward stride distance (m)
+            d_y: Lateral stride distance (m)
+            d_theta: Rotations per step (rad)
+            nb_steps: Number of steps
         """
         self.planner.configure(d_x, d_y, d_theta, nb_steps)
         
     def plan_footsteps(self, robot, start_side=placo.HumanoidRobot_Side.left):
         """
-        Plan footsteps dari posisi robot saat ini
+        Plan footsteps from the current robot position
         
         Args:
             robot: Object HumanoidRobot
-            start_side: Sisi kaki yang memulai langkah
+            start_side: The side of the foot that initiates the step
             
         Returns:
             tuple: (footsteps, supports)

@@ -1,14 +1,14 @@
 import placo
 
 class WalkParameters:
-    """Parameter untuk gaya berjalan robot"""
+    """Parameters for robot gait"""
     
     def __init__(self):
         self.params = placo.HumanoidParameters()
         self._set_default_parameters()
         
     def _set_default_parameters(self):
-        """Set parameter default"""
+        """Set default parameters"""
         # Timing parameters
         self.params.single_support_duration = 0.38
         self.params.single_support_timesteps = 10

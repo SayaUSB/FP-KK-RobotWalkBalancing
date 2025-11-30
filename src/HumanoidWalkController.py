@@ -7,7 +7,7 @@ from .FootstepPlanner import FootstepPlanner
 from .FallDetector import FallDetector
 
 class HumanoidWalkController:
-    """Controller utama untuk walking humanoid robot"""
+    """Main controller for walking humanoid robot"""
     
     def __init__(self, model_filename, dt=0.005, replan_dt=0.1):
         self.model_filename = model_filename
@@ -44,7 +44,7 @@ class HumanoidWalkController:
         self.logger = logging.getLogger("walk_controller")
 
     def initialize_robot_pose(self):
-        """Tempatkan robot pada posisi awal"""
+        """Place the robot in the starting position"""
         self.logger.info("Placing the robot in the initial position...")
         self.tasks.reach_initial_pose(
             np.eye(4),
@@ -56,11 +56,11 @@ class HumanoidWalkController:
         
     def plan_initial_trajectory(self, d_x=0.1, d_y=0.0, d_theta=0.0, nb_steps=10):
         """
-        Plan trajectory awal untuk walking
+        Initial trajectory plan for walking
         
         Args:
-            d_x, d_y, d_theta: Parameter langkah
-            nb_steps: Jumlah langkah
+            d_x, d_y, d_theta: Step parameters
+            nb_steps: Number of steps
         """
         self.footstep_planner.configure_walk(d_x, d_y, d_theta, nb_steps)
         footsteps, supports = self.footstep_planner.plan_footsteps(self.robot)
@@ -75,10 +75,10 @@ class HumanoidWalkController:
         
     def get_trunk_orientation(self):
         """
-        Dapatkan orientasi trunk dalam euler angles
+        Get the trunk orientation in euler angles
         
         Returns:
-            tuple: (roll, pitch, yaw) dalam radian
+            tuple: (roll, pitch, yaw) in radian
         """
         R_trunk = None
         try:
@@ -105,13 +105,13 @@ class HumanoidWalkController:
         
     def check_stability(self, com_z):
         """
-        Cek stabilitas robot
+        Check robot stability
         
         Args:
-            com_z: Ketinggian CoM
+            com_z: Height of CoM
             
         Returns:
-            bool: True jika stabil, False jika jatuh
+            bool: True if stable, False if falls
         """
         roll, pitch, yaw = self.get_trunk_orientation()
         
@@ -138,7 +138,7 @@ class HumanoidWalkController:
         return qd_sol
         
     def replan_if_needed(self):
-        """Replan trajectory jika sudah waktunya"""
+        """Replan trajectory when it's time to"""
         if (self.t - self.last_replan > self.replan_dt and 
             self.walk.can_replan_supports(self.trajectory, self.t)):
             
@@ -156,7 +156,7 @@ class HumanoidWalkController:
         return None
         
     def step(self):
-        """Satu iterasi control loop"""
+        """One iteration of the control loop"""
         self.update_trajectory()
         self.solve_ik()
         self.replan_if_needed()

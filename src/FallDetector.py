@@ -2,7 +2,7 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 class FallDetector:
-    """Mendeteksi kondisi jatuh pada robot"""
+    """Detect if the robot falls"""
     
     def __init__(self, com_z_threshold=0.3, trunk_angle_threshold=0.5, com_drop_threshold=0.05):
         self.com_z_threshold = com_z_threshold
@@ -12,15 +12,15 @@ class FallDetector:
         
     def check_fall(self, com_z, roll, pitch):
         """
-        Cek apakah robot jatuh berdasarkan CoM dan sudut trunk
+        Check whether the robot falls based on the CoM and trunk angle
         
         Args:
-            com_z: Ketinggian center of mass
-            roll: Sudut roll trunk (rad)
-            pitch: Sudut pitch trunk (rad)
+            com_z: Height of center of mass
+            roll: Trunk roll angle (rad)
+            pitch: Trunk roll angle (rad)
             
         Returns:
-            bool: True jika terdeteksi jatuh
+            bool: True if falls
         """
         if com_z < self.com_z_threshold:
             self.logger.warning(f"Fall detected: CoM too low ({com_z:.3f} < {self.com_z_threshold})")

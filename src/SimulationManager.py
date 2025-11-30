@@ -8,7 +8,7 @@ from placo_utils.visualization import (
 )
 
 class SimulationManager:
-    """Manager untuk visualisasi dan simulasi"""
+    """Manager for visualization and simulation"""
     
     def __init__(self, controller, use_pybullet=False, use_meshcat=False):
         self.controller = controller
@@ -24,7 +24,7 @@ class SimulationManager:
         self._setup_visualization()
         
     def _setup_visualization(self):
-        """Setup PyBullet atau MeshCat"""
+        """Setup PyBullet or MeshCat"""
         if self.use_pybullet:
             import pybullet as p
             from onshape_to_robot.simulation import Simulation
@@ -39,13 +39,13 @@ class SimulationManager:
             footsteps_viz(self.controller.trajectory.get_supports())
             
     def get_com_position(self):
-        """Dapatkan posisi CoM dari simulasi"""
+        """Get CoM position from simulation"""
         if self.use_pybullet:
             import pybullet as p
             com_pos, _ = p.getBasePositionAndOrientation(1)
             return com_pos[2]
         else:
-            # Untuk meshcat atau tanpa simulasi, ambil dari robot
+            # For meshcat or without simulation, take from robot
             return self.controller.robot.com_world()[2]
             
     def update_pybullet(self, t):
@@ -97,6 +97,6 @@ class SimulationManager:
                 line_viz("CoM_trajectory", np.array(coms), 0xFFAA00)
                 
     def spin_lock(self, t):
-        """Wait sampai waktu berikutnya"""
+        """Wait until next event"""
         while time.time() + self.initial_delay < self.start_t + t:
             time.sleep(1e-3)
