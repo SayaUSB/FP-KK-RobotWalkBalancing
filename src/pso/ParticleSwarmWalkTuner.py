@@ -1,8 +1,8 @@
 import logging
 from typing import Optional, Callable, Dict
-from .WalkParameters import WalkParameters
+from ..placo.WalkParameters import WalkParameters
 from .ParticleSwarmOptimization import PSOOptimizer
-from .WalkFitnessEvaluator import WalkFitnessEvaluator
+from ..evaluator.WalkFitnessEvaluator import WalkFitnessEvaluator
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("pso_walk_tuner")

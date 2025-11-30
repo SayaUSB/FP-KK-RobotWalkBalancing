@@ -1,6 +1,6 @@
-from src.WalkParameters import WalkParameters
-from src.WalkFitnessEvaluator import WalkFitnessEvaluator
-from src.ParticleSwarmWalkTuner import PSOWalkTuner
+from src.placo.WalkParameters import WalkParameters
+from src.evaluator.WalkFitnessEvaluator import WalkFitnessEvaluator
+from src.pso.ParticleSwarmWalkTuner import PSOWalkTuner
 import matplotlib.pyplot as plt
 
 
@@ -33,7 +33,7 @@ def plot_optimization_results(history):
 
 def main():
     """Main example"""
-    from src.HumanoidWalkController import HumanoidWalkController
+    from src.placo.HumanoidWalkController import HumanoidWalkController
     
     # 1. Create walk parameters
     print("Creating walk parameters...")

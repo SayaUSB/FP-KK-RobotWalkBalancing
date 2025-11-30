@@ -1,7 +1,7 @@
 import time
 import argparse
-from src.HumanoidWalkController import HumanoidWalkController
-from src.SimulationManager import SimulationManager
+from src.placo.HumanoidWalkController import HumanoidWalkController
+from src.placo.SimulationManager import SimulationManager
 
 import warnings
 warnings.filterwarnings("ignore")
@@ -22,7 +22,7 @@ def main():
     
     # Setup robot
     controller.initialize_robot_pose()
-    controller.plan_initial_trajectory(d_x=0.3, d_y=0.0, d_theta=0.0, nb_steps=10)
+    controller.plan_initial_trajectory(d_x=0.36, d_y=0.0, d_theta=0.0, nb_steps=10)
     
     # Setup simulation/visualization
     sim_manager = SimulationManager(
