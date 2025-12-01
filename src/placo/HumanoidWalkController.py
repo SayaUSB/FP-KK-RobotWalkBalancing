@@ -9,14 +9,14 @@ from .FallDetector import FallDetector
 class HumanoidWalkController:
     """Main controller for walking humanoid robot"""
     
-    def __init__(self, model_filename, dt=0.005, replan_dt=0.1):
+    def __init__(self, model_filename, dt=0.005, replan_dt=0.1, parameters: dict=None):
         self.model_filename = model_filename
         self.dt = dt
         self.replan_dt = replan_dt
         
         # Initialize components
         self.robot = placo.HumanoidRobot(model_filename)
-        self.walk_params = WalkParameters()
+        self.walk_params = WalkParameters(parameters)
         self.parameters = self.walk_params.get_parameters()
         
         # Setup solver
