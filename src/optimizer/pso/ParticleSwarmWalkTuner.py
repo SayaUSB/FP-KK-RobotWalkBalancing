@@ -9,7 +9,7 @@ logger = logging.getLogger("pso_walk_tuner")
 
 
 class PSOWalkTuner:
-    """Main class untuk tuning walk parameters menggunakan PSO"""
+    """Main class for tuning walk parameters using PSO"""
     
     def __init__(
         self,
