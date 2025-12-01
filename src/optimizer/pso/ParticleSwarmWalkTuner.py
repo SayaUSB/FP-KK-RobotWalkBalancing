@@ -25,8 +25,8 @@ class PSOWalkTuner:
         Args:
             walk_params: WalkParameters object
             fitness_evaluator: WalkFitnessEvaluator object
-            n_particles: Jumlah particles dalam swarm
-            max_iterations: Maximum iterasi optimization
+            n_particles: Total swarm particle
+            max_iterations: Maximum iteration optimization
             w: Inertia weight
             c1: Cognitive parameter
             c2: Social parameter
