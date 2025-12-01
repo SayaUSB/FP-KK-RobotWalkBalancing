@@ -97,67 +97,55 @@ class WalkParameters:
         self.tunable_params = {
             # Timing parameters
             'single_support_duration': ParameterBounds(
-                'single_support_duration', 0.2, 0.6, 0.38, float
-            ),
-            'single_support_timesteps': ParameterBounds(
-                'single_support_timesteps', 1, 20, 10, int
+                'single_support_duration', 0.2, 0.6, 0.38,
             ),
             'double_support_ratio': ParameterBounds(
-                'double_support_ratio', 0.0, 0.3, 0.0, float
+                'double_support_ratio', 0.0, 0.3, 0.0, 
             ),
             'startend_double_support_ratio': ParameterBounds(
-                'startend_double_support_ratio', 1.0, 2.0, 1.5, float
-            ),
-            'planned_timesteps': ParameterBounds(
-                'planned_timesteps', 10, 50, 48, int
+                'startend_double_support_ratio', 1.0, 2.0, 1.5, 
             ),
             
             # Posture parameters
             'walk_com_height': ParameterBounds(
-                'walk_com_height', 0.25, 0.40, 0.32, float
+                'walk_com_height', 0.25, 0.40, 0.32, 
             ),
             'walk_foot_height': ParameterBounds(
-                'walk_foot_height', 0.02, 0.08, 0.04, float
+                'walk_foot_height', 0.02, 0.08, 0.04, 
             ),
             'walk_trunk_pitch': ParameterBounds(
-                'walk_trunk_pitch', 0.0, 0.3, 0.15, float
+                'walk_trunk_pitch', 0.0, 0.3, 0.15, 
             ),
             'walk_foot_rise_ratio': ParameterBounds(
-                'walk_foot_rise_ratio', 0.1, 0.4, 0.2, float
+                'walk_foot_rise_ratio', 0.1, 0.4, 0.2, 
             ),
             
             # Feet parameters
-            'foot_length': ParameterBounds(
-                'feet_spacing', 0, 0.3, 0.1576, float
-            ),
-            'foot_width': ParameterBounds(
-                'foot_width', 0, 0.3, 0.092, float
-            ),
             'feet_spacing': ParameterBounds(
-                'feet_spacing', 0.10, 0.15, 0.122, float
+                'feet_spacing', 0.10, 0.15, 0.122, 
             ),
             'zmp_margin': ParameterBounds(
-                'zmp_margin', 0.01, 0.04, 0.02, float
+                'zmp_margin', 0.01, 0.04, 0.02, 
             ),
             'foot_zmp_target_x': ParameterBounds(
-                'foot_zmp_target_x', -0.02, 0.02, 0.0, float
+                'foot_zmp_target_x', -0.02, 0.02, 0.0, 
             ),
             'foot_zmp_target_y': ParameterBounds(
-                'foot_zmp_target_y', -0.02, 0.02, 0.0, float
+                'foot_zmp_target_y', -0.02, 0.02, 0.0, 
             ),
             
             # Limit parameters
             'walk_max_dtheta': ParameterBounds(
-                'walk_max_dtheta', 0.5, 1.5, 1.0,float
+                'walk_max_dtheta', 0.5, 1.5, 1.0,
             ),
             'walk_max_dy': ParameterBounds(
-                'walk_max_dy', 0.02, 0.08, 0.04, float
+                'walk_max_dy', 0.02, 0.08, 0.04, 
             ),
             'walk_max_dx_forward': ParameterBounds(
-                'walk_max_dx_forward', 0.5, 1.5, 1.0, float
+                'walk_max_dx_forward', 0.5, 1.5, 1.0, 
             ),
             'walk_max_dx_backward': ParameterBounds(
-                'walk_max_dx_backward', 0.02, 0.06, 0.03, float
+                'walk_max_dx_backward', 0.02, 0.06, 0.03, 
             ),
         }
         
