@@ -61,7 +61,7 @@ class WalkParameters:
             # Limit parameters
             self.params.walk_max_dtheta = 1
             self.params.walk_max_dy = 0.04
-            self.params.walk_max_dx_forward = 1
+            self.params.walk_max_dx_forward = 0.36
             self.params.walk_max_dx_backward = 0.03
         else:
             # Timing parameters
