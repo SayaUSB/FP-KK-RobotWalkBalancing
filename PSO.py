@@ -1,6 +1,6 @@
 from src.placo.WalkParameters import WalkParameters
 from src.evaluator.WalkFitnessEvaluator import WalkFitnessEvaluator
-from src.pso.ParticleSwarmWalkTuner import PSOWalkTuner
+from src.optimizer.pso.ParticleSwarmWalkTuner import PSOWalkTuner
 import matplotlib.pyplot as plt
 
 
