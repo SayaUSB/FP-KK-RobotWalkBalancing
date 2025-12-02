@@ -12,6 +12,7 @@
   },
   "best_parameters": {
     "single_support_duration": 0.5789473684210527,
+    "single_support_timesteps": 10,
     "double_support_ratio": 0.15789473684210525,
     "startend_double_support_ratio": 1.7894736842105263,
     "walk_com_height": 0.32894736842105265,
@@ -25,7 +26,10 @@
     "walk_max_dtheta": 0.9736842105263157,
     "walk_max_dy": 0.04526315789473684,
     "walk_max_dx_forward": 0.9736842105263157,
-    "walk_max_dx_backward": 0.032631578947368414
+    "walk_max_dx_backward": 0.032631578947368414,
+    "planned_timesteps": 48,
+    "foot_length": 0.1576,
+    "foot_width": 0.092
   },
   "best_fitness": 31.951139408764252,
   "fitness_history": [
