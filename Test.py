@@ -49,7 +49,7 @@ def main():
     
     # Setup robot
     controller.initialize_robot_pose()
-    controller.plan_initial_trajectory(d_x=0.1, d_y=0.0, d_theta=0.1, nb_steps=10)
+    controller.plan_initial_trajectory(d_x=0.36, d_y=0.0, d_theta=0.0, nb_steps=10)
     
     # Setup simulation/visualization
     sim_manager = SimulationManager(
