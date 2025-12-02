@@ -72,8 +72,8 @@ def main():
     
     # 5. Save results
     print("\nSaving results...")
-    tuner.save_results('pso_results.json')
-    walk_params.save_to_file('best_walk_params.json')
+    tuner.save_results('/log/pso/pso_results.json')
+    walk_params.save_to_file('/log/pso/best_walk_params.json')
     
     # 6. Plot results
     print("\nPlotting results...")
