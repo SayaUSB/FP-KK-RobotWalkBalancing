@@ -12,8 +12,8 @@ class WalkFitnessEvaluator:
         self,
         controller_class,
         model_filename: str,
-        simulation_duration: float = 5.0,
-        target_distance: float = 0.5,
+        simulation_duration: float = 30,
+        target_distance: float = 5,
         weights: Dict[str, float] = None,
     ):
         """
@@ -97,7 +97,7 @@ class WalkFitnessEvaluator:
                 fitness += self.weights['fall_penalty']
                 
             # 2. Distance error
-            distance_error = abs(self.target_distance - distance_traveled)
+            distance_error = max(0.0, self.target_distance - distance_traveled)
             fitness += distance_error * self.weights['distance_error']
             
             # 3. Penalize instability
