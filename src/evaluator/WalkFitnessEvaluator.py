@@ -53,7 +53,7 @@ class WalkFitnessEvaluator:
             
             # Initialize robot
             controller.initialize_robot_pose()
-            controller.plan_initial_trajectory(d_x=0.1, d_y=0.0, d_theta=0.0, nb_steps=10)
+            controller.plan_initial_trajectory(d_x=0.2, d_y=0.0, d_theta=0.0, nb_steps=10)
             
             # Run simulation
             initial_pos = controller.robot.com_world()[:2].copy()
