@@ -142,7 +142,7 @@ class WalkParameters:
                 'walk_max_dy', 0.02, 0.08, 0.04, 
             ),
             'walk_max_dx_forward': ParameterBounds(
-                'walk_max_dx_forward', 0.5, 1.5, 1.0, 
+                'walk_max_dx_forward', 0.1, 0.3, 0.2, 
             ),
             'walk_max_dx_backward': ParameterBounds(
                 'walk_max_dx_backward', 0.02, 0.06, 0.03, 
