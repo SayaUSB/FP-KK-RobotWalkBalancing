@@ -44,8 +44,8 @@ def main():
     evaluator = WalkFitnessEvaluator(
         controller_class=HumanoidWalkController,
         model_filename="model/sigmaban/robot.urdf",
-        simulation_duration=5.0,
-        target_distance=0.5,
+        simulation_duration=30,
+        target_distance=5,
         weights={
             'fall_penalty': 1000.0,
             'distance_error': 100.0,
