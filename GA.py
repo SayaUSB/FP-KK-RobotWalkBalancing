@@ -1,20 +1,42 @@
 import os
-import matplotlib.pyplot as plt
+import time
+import tracemalloc
+import threading
 from src.evaluator.WalkFitnessEvaluator import WalkFitnessEvaluator
 from src.placo.HumanoidWalkController import HumanoidWalkController
 from src.placo.WalkParameters import WalkParameters
 from src.optimizer.ga.GeneticAlgorithmWalkTuner import GAWalkTuner
+import matplotlib.pyplot as plt
 
-def ensure_log_dir(directory):
-    """Ensure logging directory exists"""
-    if not os.path.exists(directory):
-        os.makedirs(directory)
-
-def plot_optimization_results(history, save_path):
-    """Plot GA convergence history"""
-    fig, (ax1, ax2) = plt.subplots(2, 1, figsize=(10, 8))
+def get_next_run_directory(base_dir="log/ga"):
+    if not os.path.exists(base_dir):
+        os.makedirs(base_dir)
+        next_id = 1
+    else:
+        existing_dirs = [d for d in os.listdir(base_dir) 
+                         if os.path.isdir(os.path.join(base_dir, d)) and d.isdigit()]
+        if existing_dirs:
+            last_id = max([int(d) for d in existing_dirs])
+            next_id = last_id + 1
+        else:
+            next_id = 1
     
-    # Plot average and best fitness
+    run_dir = os.path.join(base_dir, str(next_id))
+    os.makedirs(run_dir)
+    print(f"Created new log directory: {run_dir}")
+    return run_dir
+
+def monitor_memory_usage(memory_history, stop_event, start_time):
+    while not stop_event.is_set():
+        current, _ = tracemalloc.get_traced_memory()
+        elapsed_time = time.time() - start_time
+        memory_history.append((elapsed_time, current / (1024 * 1024)))
+        time.sleep(0.1)  # Sampling rate: 100ms
+
+def plot_optimization_results(history, memory_history, save_path):
+    fig, (ax1, ax2, ax3) = plt.subplots(3, 1, figsize=(10, 12))
+    
+    # Fitness Convergence
     ax1.plot(history['fitness_history'], label='Average Fitness', alpha=0.7, color='blue')
     ax1.plot(history['best_fitness_history'], label='Best Fitness', linewidth=2, color='red')
     ax1.set_xlabel('Generation')
@@ -23,7 +45,7 @@ def plot_optimization_results(history, save_path):
     ax1.legend()
     ax1.grid(True, alpha=0.3)
     
-    # Plot improvement rate
+    # Fitness Improvement 
     best_fitness = history['best_fitness_history']
     improvement = [0] + [best_fitness[i-1] - best_fitness[i] for i in range(1, len(best_fitness))]
     ax2.bar(range(len(improvement)), improvement, alpha=0.7, color='green')
@@ -32,55 +54,118 @@ def plot_optimization_results(history, save_path):
     ax2.set_title('Improvement per Generation')
     ax2.grid(True, alpha=0.3)
     
+    # Memory Usage over Time
+    if memory_history:
+        times = [m[0] for m in memory_history]
+        mems = [m[1] for m in memory_history]
+        
+        ax3.plot(times, mems, label='Memory Usage (MB)', color='purple')
+        ax3.fill_between(times, mems, color='purple', alpha=0.1)
+        
+        # Calculate Stats
+        peak_mem = max(mems)
+        avg_mem = sum(mems) / len(mems)
+        
+        # Add Reference Lines
+        ax3.axhline(y=peak_mem, color='red', linestyle='--', alpha=0.7, label=f'Peak: {peak_mem:.2f} MB')
+        ax3.axhline(y=avg_mem, color='green', linestyle='-.', alpha=0.7, label=f'Avg: {avg_mem:.2f} MB')
+        
+        ax3.set_xlabel('Time (seconds)')
+        ax3.set_ylabel('Memory (MB)')
+        ax3.set_title('System Memory Usage during Optimization')
+        ax3.legend(loc='upper right')
+        ax3.grid(True, alpha=0.3)
+    
     plt.tight_layout()
-    plt.savefig(save_path)
-    print(f"Convergence plot saved to {save_path}")
+    
+    plot_file = os.path.join(save_path, 'ga_analysis_report.png')
+    plt.savefig(plot_file)
+    print(f"Analysis plot saved to {plot_file}")
+    plt.close()
+
+def format_time(seconds):
+    """Mengubah detik menjadi format Jam:Menit:Detik"""
+    m, s = divmod(seconds, 60)
+    h, m = divmod(m, 60)
+    return f"{int(h)}h {int(m)}m {s:.2f}s"
 
 def main():
-    # Setup log directory
-    log_dir = 'log/ga'
-    ensure_log_dir(log_dir)
+    # Setup logging & Profiling
+    current_log_dir = get_next_run_directory("log/ga")
+    
+    # Mulai tracking memori
+    print("Starting resource monitoring...")
+    tracemalloc.start()
+    start_time = time.time()
+    
+    # Setup Thread Monitoring Memory
+    memory_history = []
+    stop_monitoring = threading.Event()
+    monitor_thread = threading.Thread(
+        target=monitor_memory_usage, 
+        args=(memory_history, stop_monitoring, start_time)
+    )
+    monitor_thread.start()
 
-    # 1. Create walk parameters
-    print("Creating walk parameters...")
-    walk_params = WalkParameters()
+    try:
+        # 1. Create walk parameters
+        print("Creating walk parameters...")
+        walk_params = WalkParameters()
+        
+        # 2. Create fitness evaluator
+        print("Creating fitness evaluator...")
+        evaluator = WalkFitnessEvaluator(
+            controller_class=HumanoidWalkController,
+            model_filename="model/sigmaban/robot.urdf",
+            simulation_duration=30,
+            target_distance=5,
+            weights={
+                'fall_penalty': 1000.0,
+                'distance_error': 100.0,
+                'instability': 50.0,
+                'parameter_smoothness': 10.0,
+            }
+        )
+        
+        # 3. Create GA tuner
+        print("Creating GA tuner...")
+        tuner = GAWalkTuner(
+            walk_params=walk_params,
+            fitness_evaluator=evaluator,
+            population_size=20,     # Size of the population
+            max_generations=50,     # Max iterations
+            mutation_rate=0.1,      # 10% chance for a gene to mutate
+            crossover_rate=0.8,     # 80% chance for crossover
+            elite_size=2            # Keep top 2 best individuals
+        )
+        
+        # 4. Run optimization
+        print("\nStarting optimization...")
+        best_params, best_fitness = tuner.optimize(verbose=True)
     
-    # 2. Create fitness evaluator
-    print("Creating fitness evaluator...")
-    evaluator = WalkFitnessEvaluator(
-        controller_class=HumanoidWalkController,
-        model_filename="model/sigmaban/robot.urdf",
-        simulation_duration=30,
-        target_distance=5,
-        weights={
-            'fall_penalty': 1000.0,
-            'distance_error': 100.0,
-            'instability': 50.0,
-            'parameter_smoothness': 10.0,
-        }
-    )
+    finally:
+        # Stop Profiling
+        stop_monitoring.set()
+        monitor_thread.join()
+        
+        end_time = time.time()
+        current_mem, peak_mem = tracemalloc.get_traced_memory()
+        tracemalloc.stop()
+
+    total_time = end_time - start_time
+    peak_mem_mb = peak_mem / (1024 * 1024)
     
-    # 3. Create GA tuner
-    print("Creating GA tuner...")
-    tuner = GAWalkTuner(
-        walk_params=walk_params,
-        fitness_evaluator=evaluator,
-        population_size=20,     # Size of the population
-        max_generations=50,     # Max iterations
-        mutation_rate=0.1,      # 10% chance for a gene to mutate
-        crossover_rate=0.8,     # 80% chance for crossover
-        elite_size=2            # Keep top 2 best individuals
-    )
-    
-    # 4. Run optimization
-    print("\nStarting optimization...")
-    best_params, best_fitness = tuner.optimize(verbose=True)
-    
+    # Calculate average from history if available
+    if memory_history:
+        avg_mem_mb = sum(m[1] for m in memory_history) / len(memory_history)
+    else:
+        avg_mem_mb = current_mem / (1024 * 1024)
+
     # 5. Save results
-    print("\nSaving results...")
-    results_file = os.path.join(log_dir, 'ga_results.json')
-    params_file = os.path.join(log_dir, 'best_walk_params_ga.json')
-    plot_file = os.path.join(log_dir, 'ga_convergence.png')
+    print(f"\nSaving results to {current_log_dir}...")
+    
+    results_file = os.path.join(current_log_dir, 'ga_results.json')
+    params_file = os.path.join(current_log_dir, 'best_walk_params_ga.json')
     
     tuner.save_results(results_file)
     walk_params.save_to_file(params_file)
@@ -88,13 +173,22 @@ def main():
     # 6. Plot results
     print("\nPlotting results...")
     history = tuner.get_optimization_history()
-    plot_optimization_results(history, plot_file)
+    plot_optimization_results(history, memory_history, current_log_dir)
     
     # 7. Print summary
     print("\n" + "="*60)
     print("OPTIMIZATION COMPLETED")
     print("="*60)
-    print(f"Best Fitness: {best_fitness:.6f}")
+    
+    # Performance Stats
+    print(f"PERFORMANCE METRICS:")
+    print(f"  Total Duration     : {format_time(total_time)}")
+    print(f"  Peak Memory Usage  : {peak_mem_mb:.2f} MB")
+    print(f"  Average Memory Usage: {avg_mem_mb:.2f} MB")
+    print("-" * 60)
+    
+    print(f"Log Directory: {current_log_dir}")
+    print(f"Best Fitness : {best_fitness:.6f}")
     print("\nBest Parameters:")
     for name, value in best_params.items():
         bounds = walk_params.tunable_params[name]
