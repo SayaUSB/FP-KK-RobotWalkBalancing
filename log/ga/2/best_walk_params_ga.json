@@ -1,0 +1,111 @@
+{
+  "parameters": {
+    "single_support_duration": 0.38,
+    "double_support_ratio": 0.0,
+    "startend_double_support_ratio": 1.5,
+    "walk_com_height": 0.32,
+    "walk_foot_height": 0.04,
+    "walk_trunk_pitch": 0.15,
+    "walk_foot_rise_ratio": 0.2,
+    "feet_spacing": 0.122,
+    "zmp_margin": 0.02,
+    "foot_zmp_target_x": 0.0,
+    "foot_zmp_target_y": 0.0,
+    "walk_max_dtheta": 1.0,
+    "walk_max_dy": 0.04,
+    "walk_max_dx_forward": 0.36,
+    "walk_max_dx_backward": 0.03
+  },
+  "bounds": {
+    "single_support_duration": {
+      "name": "single_support_duration",
+      "min_value": 0.2,
+      "max_value": 0.6,
+      "default_value": 0.38
+    },
+    "double_support_ratio": {
+      "name": "double_support_ratio",
+      "min_value": 0.0,
+      "max_value": 0.3,
+      "default_value": 0.0
+    },
+    "startend_double_support_ratio": {
+      "name": "startend_double_support_ratio",
+      "min_value": 1.0,
+      "max_value": 2.0,
+      "default_value": 1.5
+    },
+    "walk_com_height": {
+      "name": "walk_com_height",
+      "min_value": 0.25,
+      "max_value": 0.4,
+      "default_value": 0.32
+    },
+    "walk_foot_height": {
+      "name": "walk_foot_height",
+      "min_value": 0.02,
+      "max_value": 0.08,
+      "default_value": 0.04
+    },
+    "walk_trunk_pitch": {
+      "name": "walk_trunk_pitch",
+      "min_value": 0.0,
+      "max_value": 0.3,
+      "default_value": 0.15
+    },
+    "walk_foot_rise_ratio": {
+      "name": "walk_foot_rise_ratio",
+      "min_value": 0.1,
+      "max_value": 0.4,
+      "default_value": 0.2
+    },
+    "feet_spacing": {
+      "name": "feet_spacing",
+      "min_value": 0.1,
+      "max_value": 0.15,
+      "default_value": 0.122
+    },
+    "zmp_margin": {
+      "name": "zmp_margin",
+      "min_value": 0.01,
+      "max_value": 0.04,
+      "default_value": 0.02
+    },
+    "foot_zmp_target_x": {
+      "name": "foot_zmp_target_x",
+      "min_value": -0.02,
+      "max_value": 0.02,
+      "default_value": 0.0
+    },
+    "foot_zmp_target_y": {
+      "name": "foot_zmp_target_y",
+      "min_value": -0.02,
+      "max_value": 0.02,
+      "default_value": 0.0
+    },
+    "walk_max_dtheta": {
+      "name": "walk_max_dtheta",
+      "min_value": 0.5,
+      "max_value": 1.5,
+      "default_value": 1.0
+    },
+    "walk_max_dy": {
+      "name": "walk_max_dy",
+      "min_value": 0.02,
+      "max_value": 0.08,
+      "default_value": 0.04
+    },
+    "walk_max_dx_forward": {
+      "name": "walk_max_dx_forward",
+      "min_value": 0.1,
+      "max_value": 0.3,
+      "default_value": 0.2
+    },
+    "walk_max_dx_backward": {
+      "name": "walk_max_dx_backward",
+      "min_value": 0.02,
+      "max_value": 0.06,
+      "default_value": 0.03
+    }
+  }
+}
