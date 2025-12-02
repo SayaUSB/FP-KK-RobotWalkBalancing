@@ -4,7 +4,7 @@ logging.basicConfig(level=logging.INFO)
 class FallDetector:
     """Detect if the robot falls"""
     
-    def __init__(self, com_z_threshold=0.25, trunk_angle_threshold=0.5, com_drop_threshold=0.05):
+    def __init__(self, com_z_threshold=0.2, trunk_angle_threshold=0.5, com_drop_threshold=0.05):
         self.com_z_threshold = com_z_threshold
         self.trunk_angle_threshold = trunk_angle_threshold
         self.com_drop_threshold = com_drop_threshold
